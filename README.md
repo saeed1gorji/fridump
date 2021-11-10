@@ -11,7 +11,7 @@ How to:
 The following are the main flags that can be used with fridump:
 
       positional arguments:
-      process            the process that you will be injecting to
+      process             the process name or pid that you will be injecting to
 
       optional arguments:
       -h, --help          show this help message and exit
@@ -34,7 +34,7 @@ Examples:
 
       fridump -U Safari   -   Dump the memory of an iOS device associated with the Safari app
       fridump -U -s com.example.WebApp   -  Dump the memory of an Android device and run strings on all dump files
-      fridump -D emulator-5554 com.example.WebApp   -   Dump the memory of a process in an emulated Android device
+      fridump -D emulator-5554 1124   -   Dump the memory of the process with PID 1124 in an emulated Android device
       fridump -r -o [full_path]  -  Dump the memory of a local application and save it to the specified directory
       
 More examples can be found [here](http://pentestcorner.com/introduction-to-fridump/)
