@@ -28,7 +28,7 @@ def MENU():
         description=textwrap.dedent(""))
 
     parser.add_argument('process',
-                        help='the process that you will be injecting to')
+                        help='the process name or pid that you will be injecting to')
     parser.add_argument('-o', '--out', type=str, metavar="dir",
                         help='provide full output directory path. (def: \'dump\')')
     parser.add_argument('-D', '--device', type=str, metavar='id',
@@ -52,7 +52,7 @@ print(logo)
 arguments = MENU()
 
 # Define Configurations
-APP_NAME = arguments.process
+PROCESS = arguments.process
 DIRECTORY = ""
 USB = arguments.usb
 DEVICE = arguments.device
@@ -69,15 +69,21 @@ if arguments.verbose:
 logging.basicConfig(format='%(levelname)s:%(message)s', level=DEBUG_LEVEL)
 
 
+try:
+    # Convert PID string to int.
+    PROCESS = int(PROCESS)
+except ValueError:
+    pass
+
 # Start a new Session
 session = None
 try:
     if USB:
-        session = frida.get_usb_device().attach(APP_NAME)
+        session = frida.get_usb_device().attach(PROCESS)
     elif DEVICE:
-        session = frida.get_device(DEVICE).attach(APP_NAME)
+        session = frida.get_device(DEVICE).attach(PROCESS)
     else:
-        session = frida.attach(APP_NAME)
+        session = frida.attach(PROCESS)
 except Exception as e:
     print("Can't connect to App. Have you connected the device?")
     logging.debug(str(e))
